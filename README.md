@@ -1,5 +1,7 @@
 # vize-narrowed-slot-condition-repro
 
+Reported as [ubugeeei-prod/vize#10660](https://github.com/ubugeeei-prod/vize/issues/10660).
+
 Minimal reproduction for a false type error in [vize](https://github.com/ubugeeei-prod/vize)'s content mapper.
 
 When a component with an explicit `<template #default>` is repeated by `v-for` inside a `v-else` branch, the generated code repeats the `v-if` condition inside a block where TypeScript has already narrowed it away. The comparison then reports TS2367.
