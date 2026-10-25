@@ -42,9 +42,9 @@ No error. Nothing in the template compares `status` inside the `v-else` branch.
 
 ```
 src/Status.vue(179,194): error TS2367: This comparison appears to be unintentional because the types '"error" | "success"' and '"pending"' have no overlap.
-  This location is in virtual code produced by the content mapper 'vize@0.562.0' and has no corresponding location in the original file.
+  This location is in virtual code produced by the content mapper 'vize@0.569.0' and has no corresponding location in the original file.
 src/Status.vue(261,194): error TS2367: This comparison appears to be unintentional because the types '"error" | "success"' and '"pending"' have no overlap.
-  This location is in virtual code produced by the content mapper 'vize@0.562.0' and has no corresponding location in the original file.
+  This location is in virtual code produced by the content mapper 'vize@0.569.0' and has no corresponding location in the original file.
 ```
 
 ## Notes
@@ -59,11 +59,11 @@ src/Status.vue(261,194): error TS2367: This comparison appears to be unintention
         } : (undefined as unknown as never), …), (…)(Box)((!(status === 'pending')) ? {
   ```
 
-  [`generate_slot_host_binding`](https://github.com/ubugeeei-prod/vize/blob/v0.562.0/crates/vize_canon/src/virtual_ts/expressions/generic_props_call.rs#L160-L220) writes the guard twice but emits one `// @ts-ignore`. The props literal between them contains a line break, so the second guard lands on the next line, which the `@ts-ignore` does not cover.
+  [`generate_slot_host_binding`](https://github.com/ubugeeei-prod/vize/blob/v0.569.0/crates/vize_canon/src/virtual_ts/expressions/generic_props_call.rs#L160-L220) writes the guard twice but emits one `// @ts-ignore`. The props literal between them contains a line break, so the second guard lands on the next line, which the `@ts-ignore` does not cover.
+- [#10216](https://github.com/ubugeeei-prod/vize/issues/10216) (fixed) had the same shape in the "Component props in v-for scope" block. This is a different emitter, and it still fails on 0.569.0, where the #10216 reproduction passes.
 - Without `v-for`, or with the default slot written implicitly (`<Box v-for="…">{{ fruit }}</Box>`), there is no error.
-- tsrs 0.18.0-ts7.1.0-dev.20260929 reports the same two errors (`tsrs --runExternalCode --noEmit -p tsconfig.json`).
 - `vize check src` reports `No type errors found!`. Vize's own checker also gets the error from the native TypeScript checker, but it drops diagnostics that have no location in the `.vue` file.
 
 ## Environment
 
-vize 0.562.0, TypeScript 7.1.0-beta, Vue 3.5.44, Node v26.12.1, pnpm 12.9.0, macOS (arm64)
+vize 0.569.0, TypeScript 7.1.0-beta, Vue 3.5.44, Node v26.12.1, pnpm 12.9.0, macOS (arm64)
